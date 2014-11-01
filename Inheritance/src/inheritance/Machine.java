@@ -2,6 +2,11 @@
 package inheritance;
 
 public class Machine {
+    
+    public Machine(){
+    System.out.println("Constructor running!");    
+    }
+
      
     protected String name = "Machine Type 1";
      

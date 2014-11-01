@@ -1,3 +1,5 @@
+package tutorials;
+
 class Person {
 // Instance variables(data or "state")
 
