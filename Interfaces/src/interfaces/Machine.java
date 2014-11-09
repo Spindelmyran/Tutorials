@@ -1,7 +1,7 @@
 
 package interfaces;
 
-public class Machine implements Info {
+public class Machine implements Info,IStartable {
      
     private int id = 7;
      
@@ -11,5 +11,10 @@ public class Machine implements Info {
  
     public void showInfo() {
         System.out.println("Machine ID is: " + id);
+    }
+
+    @Override
+    public void stop() {
+    System.out.println("Machine stopped.");
     }
 }

@@ -13,18 +13,30 @@ public class App {
          
         Info info1 = new Machine();
         info1.showInfo();
+        
          
         Info info2 = person1;
         info2.showInfo();
-         
+        
         System.out.println();
          
         outputInfo(mach1);
         outputInfo(person1);
+        
+        stop(mach1);
     }
      
     private static void outputInfo(Info info) {
         info.showInfo();
     }
+    
+    private static void start(IStartable istartable){
+        istartable.start();
+    }
+    
+    private static void stop(IStartable istartable){
+        istartable.stop();
+    }
+            
     
 }
