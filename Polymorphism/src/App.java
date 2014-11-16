@@ -19,9 +19,12 @@ public static void main(String[] args){
          
         // ... so this won't work.
         //plant2.shedLeaves();
+        
+
          
         // Another example of polymorphism.
         doGrow(tree);
+        doGrow(plant2);
     }   
      
     public static void doGrow(Plant plant) {
