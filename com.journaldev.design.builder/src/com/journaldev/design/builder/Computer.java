@@ -29,7 +29,7 @@ public class Computer {
     }
     
     public String toString() {
-		return "HDD:" + HDD + ", RAM:" + RAM ;
+		return "HDD:" + HDD + ", RAM:" + RAM + ", isGraphicsCardEnabled: " + isGraphicsCardEnabled ;
 	}
      
     private Computer(ComputerBuilder builder) {
