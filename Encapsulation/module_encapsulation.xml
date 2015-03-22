@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_encapsulation" default="compile.module.encapsulation">
+  <dirname property="module.encapsulation.basedir" file="${ant.file.module_encapsulation}"/>
+  
+  <property name="module.jdk.home.encapsulation" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.encapsulation" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.encapsulation" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.encapsulation" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="encapsulation.output.dir" value="${module.encapsulation.basedir}/../out/production/Encapsulation"/>
+  <property name="encapsulation.testoutput.dir" value="${module.encapsulation.basedir}/../out/test/Encapsulation"/>
+  
+  <path id="encapsulation.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="encapsulation.module.production.classpath">
+    <path refid="${module.jdk.classpath.encapsulation}"/>
+  </path>
+  
+  <path id="encapsulation.runtime.production.module.classpath">
+    <pathelement location="${encapsulation.output.dir}"/>
+  </path>
+  
+  <path id="encapsulation.module.classpath">
+    <path refid="${module.jdk.classpath.encapsulation}"/>
+    <pathelement location="${encapsulation.output.dir}"/>
+  </path>
+  
+  <path id="encapsulation.runtime.module.classpath">
+    <pathelement location="${encapsulation.testoutput.dir}"/>
+    <pathelement location="${encapsulation.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.encapsulation">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.encapsulation">
+    <patternset refid="excluded.from.module.encapsulation"/>
+  </patternset>
+  
+  <path id="encapsulation.module.sourcepath">
+    <dirset dir="${module.encapsulation.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.encapsulation" depends="compile.module.encapsulation.production,compile.module.encapsulation.tests" description="Compile module Encapsulation"/>
+  
+  <target name="compile.module.encapsulation.production" depends="register.custom.compilers" description="Compile module Encapsulation; production classes">
+    <mkdir dir="${encapsulation.output.dir}"/>
+    <javac2 destdir="${encapsulation.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.encapsulation}/javac">
+      <compilerarg line="${compiler.args.encapsulation}"/>
+      <bootclasspath refid="encapsulation.module.bootclasspath"/>
+      <classpath refid="encapsulation.module.production.classpath"/>
+      <src refid="encapsulation.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.encapsulation"/>
+    </javac2>
+    
+    <copy todir="${encapsulation.output.dir}">
+      <fileset dir="${module.encapsulation.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.encapsulation.tests" depends="register.custom.compilers,compile.module.encapsulation.production" description="compile module Encapsulation; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.encapsulation" description="cleanup module">
+    <delete dir="${encapsulation.output.dir}"/>
+    <delete dir="${encapsulation.testoutput.dir}"/>
+  </target>
+</project>

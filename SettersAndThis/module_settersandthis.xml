@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_settersandthis" default="compile.module.settersandthis">
+  <dirname property="module.settersandthis.basedir" file="${ant.file.module_settersandthis}"/>
+  
+  <property name="module.jdk.home.settersandthis" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.settersandthis" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.settersandthis" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.settersandthis" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="settersandthis.output.dir" value="${module.settersandthis.basedir}/../out/production/SettersAndThis"/>
+  <property name="settersandthis.testoutput.dir" value="${module.settersandthis.basedir}/../out/test/SettersAndThis"/>
+  
+  <path id="settersandthis.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="settersandthis.module.production.classpath">
+    <path refid="${module.jdk.classpath.settersandthis}"/>
+  </path>
+  
+  <path id="settersandthis.runtime.production.module.classpath">
+    <pathelement location="${settersandthis.output.dir}"/>
+  </path>
+  
+  <path id="settersandthis.module.classpath">
+    <path refid="${module.jdk.classpath.settersandthis}"/>
+    <pathelement location="${settersandthis.output.dir}"/>
+  </path>
+  
+  <path id="settersandthis.runtime.module.classpath">
+    <pathelement location="${settersandthis.testoutput.dir}"/>
+    <pathelement location="${settersandthis.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.settersandthis">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.settersandthis">
+    <patternset refid="excluded.from.module.settersandthis"/>
+  </patternset>
+  
+  <path id="settersandthis.module.sourcepath">
+    <dirset dir="${module.settersandthis.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.settersandthis" depends="compile.module.settersandthis.production,compile.module.settersandthis.tests" description="Compile module SettersAndThis"/>
+  
+  <target name="compile.module.settersandthis.production" depends="register.custom.compilers" description="Compile module SettersAndThis; production classes">
+    <mkdir dir="${settersandthis.output.dir}"/>
+    <javac2 destdir="${settersandthis.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.settersandthis}/javac">
+      <compilerarg line="${compiler.args.settersandthis}"/>
+      <bootclasspath refid="settersandthis.module.bootclasspath"/>
+      <classpath refid="settersandthis.module.production.classpath"/>
+      <src refid="settersandthis.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.settersandthis"/>
+    </javac2>
+    
+    <copy todir="${settersandthis.output.dir}">
+      <fileset dir="${module.settersandthis.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.settersandthis.tests" depends="register.custom.compilers,compile.module.settersandthis.production" description="compile module SettersAndThis; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.settersandthis" description="cleanup module">
+    <delete dir="${settersandthis.output.dir}"/>
+    <delete dir="${settersandthis.testoutput.dir}"/>
+  </target>
+</project>

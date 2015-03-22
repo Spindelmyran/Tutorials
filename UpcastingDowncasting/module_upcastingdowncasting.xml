@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_upcastingdowncasting" default="compile.module.upcastingdowncasting">
+  <dirname property="module.upcastingdowncasting.basedir" file="${ant.file.module_upcastingdowncasting}"/>
+  
+  <property name="module.jdk.home.upcastingdowncasting" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.upcastingdowncasting" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.upcastingdowncasting" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.upcastingdowncasting" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="upcastingdowncasting.output.dir" value="${module.upcastingdowncasting.basedir}/../out/production/UpcastingDowncasting"/>
+  <property name="upcastingdowncasting.testoutput.dir" value="${module.upcastingdowncasting.basedir}/../out/test/UpcastingDowncasting"/>
+  
+  <path id="upcastingdowncasting.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="upcastingdowncasting.module.production.classpath">
+    <path refid="${module.jdk.classpath.upcastingdowncasting}"/>
+  </path>
+  
+  <path id="upcastingdowncasting.runtime.production.module.classpath">
+    <pathelement location="${upcastingdowncasting.output.dir}"/>
+  </path>
+  
+  <path id="upcastingdowncasting.module.classpath">
+    <path refid="${module.jdk.classpath.upcastingdowncasting}"/>
+    <pathelement location="${upcastingdowncasting.output.dir}"/>
+  </path>
+  
+  <path id="upcastingdowncasting.runtime.module.classpath">
+    <pathelement location="${upcastingdowncasting.testoutput.dir}"/>
+    <pathelement location="${upcastingdowncasting.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.upcastingdowncasting">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.upcastingdowncasting">
+    <patternset refid="excluded.from.module.upcastingdowncasting"/>
+  </patternset>
+  
+  <path id="upcastingdowncasting.module.sourcepath">
+    <dirset dir="${module.upcastingdowncasting.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.upcastingdowncasting" depends="compile.module.upcastingdowncasting.production,compile.module.upcastingdowncasting.tests" description="Compile module UpcastingDowncasting"/>
+  
+  <target name="compile.module.upcastingdowncasting.production" depends="register.custom.compilers" description="Compile module UpcastingDowncasting; production classes">
+    <mkdir dir="${upcastingdowncasting.output.dir}"/>
+    <javac2 destdir="${upcastingdowncasting.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.upcastingdowncasting}/javac">
+      <compilerarg line="${compiler.args.upcastingdowncasting}"/>
+      <bootclasspath refid="upcastingdowncasting.module.bootclasspath"/>
+      <classpath refid="upcastingdowncasting.module.production.classpath"/>
+      <src refid="upcastingdowncasting.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.upcastingdowncasting"/>
+    </javac2>
+    
+    <copy todir="${upcastingdowncasting.output.dir}">
+      <fileset dir="${module.upcastingdowncasting.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.upcastingdowncasting.tests" depends="register.custom.compilers,compile.module.upcastingdowncasting.production" description="compile module UpcastingDowncasting; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.upcastingdowncasting" description="cleanup module">
+    <delete dir="${upcastingdowncasting.output.dir}"/>
+    <delete dir="${upcastingdowncasting.testoutput.dir}"/>
+  </target>
+</project>

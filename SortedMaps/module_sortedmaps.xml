@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_sortedmaps" default="compile.module.sortedmaps">
+  <dirname property="module.sortedmaps.basedir" file="${ant.file.module_sortedmaps}"/>
+  
+  <property name="module.jdk.home.sortedmaps" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.sortedmaps" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.sortedmaps" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.sortedmaps" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="sortedmaps.output.dir" value="${module.sortedmaps.basedir}/../out/production/SortedMaps"/>
+  <property name="sortedmaps.testoutput.dir" value="${module.sortedmaps.basedir}/../out/test/SortedMaps"/>
+  
+  <path id="sortedmaps.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="sortedmaps.module.production.classpath">
+    <path refid="${module.jdk.classpath.sortedmaps}"/>
+  </path>
+  
+  <path id="sortedmaps.runtime.production.module.classpath">
+    <pathelement location="${sortedmaps.output.dir}"/>
+  </path>
+  
+  <path id="sortedmaps.module.classpath">
+    <path refid="${module.jdk.classpath.sortedmaps}"/>
+    <pathelement location="${sortedmaps.output.dir}"/>
+  </path>
+  
+  <path id="sortedmaps.runtime.module.classpath">
+    <pathelement location="${sortedmaps.testoutput.dir}"/>
+    <pathelement location="${sortedmaps.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.sortedmaps">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.sortedmaps">
+    <patternset refid="excluded.from.module.sortedmaps"/>
+  </patternset>
+  
+  <path id="sortedmaps.module.sourcepath">
+    <dirset dir="${module.sortedmaps.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.sortedmaps" depends="compile.module.sortedmaps.production,compile.module.sortedmaps.tests" description="Compile module SortedMaps"/>
+  
+  <target name="compile.module.sortedmaps.production" depends="register.custom.compilers" description="Compile module SortedMaps; production classes">
+    <mkdir dir="${sortedmaps.output.dir}"/>
+    <javac2 destdir="${sortedmaps.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.sortedmaps}/javac">
+      <compilerarg line="${compiler.args.sortedmaps}"/>
+      <bootclasspath refid="sortedmaps.module.bootclasspath"/>
+      <classpath refid="sortedmaps.module.production.classpath"/>
+      <src refid="sortedmaps.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.sortedmaps"/>
+    </javac2>
+    
+    <copy todir="${sortedmaps.output.dir}">
+      <fileset dir="${module.sortedmaps.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.sortedmaps.tests" depends="register.custom.compilers,compile.module.sortedmaps.production" description="compile module SortedMaps; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.sortedmaps" description="cleanup module">
+    <delete dir="${sortedmaps.output.dir}"/>
+    <delete dir="${sortedmaps.testoutput.dir}"/>
+  </target>
+</project>

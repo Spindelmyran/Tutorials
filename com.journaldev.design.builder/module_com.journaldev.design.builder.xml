@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_com.journaldev.design.builder" default="compile.module.com.journaldev.design.builder">
+  <dirname property="module.com.journaldev.design.builder.basedir" file="${ant.file.module_com.journaldev.design.builder}"/>
+  
+  <property name="module.jdk.home.com.journaldev.design.builder" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.com.journaldev.design.builder" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.com.journaldev.design.builder" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.com.journaldev.design.builder" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="com.journaldev.design.builder.output.dir" value="${module.com.journaldev.design.builder.basedir}/../out/production/com.journaldev.design.builder"/>
+  <property name="com.journaldev.design.builder.testoutput.dir" value="${module.com.journaldev.design.builder.basedir}/../out/test/com.journaldev.design.builder"/>
+  
+  <path id="com.journaldev.design.builder.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="com.journaldev.design.builder.module.production.classpath">
+    <path refid="${module.jdk.classpath.com.journaldev.design.builder}"/>
+  </path>
+  
+  <path id="com.journaldev.design.builder.runtime.production.module.classpath">
+    <pathelement location="${com.journaldev.design.builder.output.dir}"/>
+  </path>
+  
+  <path id="com.journaldev.design.builder.module.classpath">
+    <path refid="${module.jdk.classpath.com.journaldev.design.builder}"/>
+    <pathelement location="${com.journaldev.design.builder.output.dir}"/>
+  </path>
+  
+  <path id="com.journaldev.design.builder.runtime.module.classpath">
+    <pathelement location="${com.journaldev.design.builder.testoutput.dir}"/>
+    <pathelement location="${com.journaldev.design.builder.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.com.journaldev.design.builder">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.com.journaldev.design.builder">
+    <patternset refid="excluded.from.module.com.journaldev.design.builder"/>
+  </patternset>
+  
+  <path id="com.journaldev.design.builder.module.sourcepath">
+    <dirset dir="${module.com.journaldev.design.builder.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.com.journaldev.design.builder" depends="compile.module.com.journaldev.design.builder.production,compile.module.com.journaldev.design.builder.tests" description="Compile module com.journaldev.design.builder"/>
+  
+  <target name="compile.module.com.journaldev.design.builder.production" depends="register.custom.compilers" description="Compile module com.journaldev.design.builder; production classes">
+    <mkdir dir="${com.journaldev.design.builder.output.dir}"/>
+    <javac2 destdir="${com.journaldev.design.builder.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.com.journaldev.design.builder}/javac">
+      <compilerarg line="${compiler.args.com.journaldev.design.builder}"/>
+      <bootclasspath refid="com.journaldev.design.builder.module.bootclasspath"/>
+      <classpath refid="com.journaldev.design.builder.module.production.classpath"/>
+      <src refid="com.journaldev.design.builder.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.com.journaldev.design.builder"/>
+    </javac2>
+    
+    <copy todir="${com.journaldev.design.builder.output.dir}">
+      <fileset dir="${module.com.journaldev.design.builder.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.com.journaldev.design.builder.tests" depends="register.custom.compilers,compile.module.com.journaldev.design.builder.production" description="compile module com.journaldev.design.builder; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.com.journaldev.design.builder" description="cleanup module">
+    <delete dir="${com.journaldev.design.builder.output.dir}"/>
+    <delete dir="${com.journaldev.design.builder.testoutput.dir}"/>
+  </target>
+</project>

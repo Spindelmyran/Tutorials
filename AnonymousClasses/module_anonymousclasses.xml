@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_anonymousclasses" default="compile.module.anonymousclasses">
+  <dirname property="module.anonymousclasses.basedir" file="${ant.file.module_anonymousclasses}"/>
+  
+  <property name="module.jdk.home.anonymousclasses" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.anonymousclasses" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.anonymousclasses" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.anonymousclasses" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="anonymousclasses.output.dir" value="${module.anonymousclasses.basedir}/../out/production/AnonymousClasses"/>
+  <property name="anonymousclasses.testoutput.dir" value="${module.anonymousclasses.basedir}/../out/test/AnonymousClasses"/>
+  
+  <path id="anonymousclasses.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="anonymousclasses.module.production.classpath">
+    <path refid="${module.jdk.classpath.anonymousclasses}"/>
+  </path>
+  
+  <path id="anonymousclasses.runtime.production.module.classpath">
+    <pathelement location="${anonymousclasses.output.dir}"/>
+  </path>
+  
+  <path id="anonymousclasses.module.classpath">
+    <path refid="${module.jdk.classpath.anonymousclasses}"/>
+    <pathelement location="${anonymousclasses.output.dir}"/>
+  </path>
+  
+  <path id="anonymousclasses.runtime.module.classpath">
+    <pathelement location="${anonymousclasses.testoutput.dir}"/>
+    <pathelement location="${anonymousclasses.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.anonymousclasses">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.anonymousclasses">
+    <patternset refid="excluded.from.module.anonymousclasses"/>
+  </patternset>
+  
+  <path id="anonymousclasses.module.sourcepath">
+    <dirset dir="${module.anonymousclasses.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.anonymousclasses" depends="compile.module.anonymousclasses.production,compile.module.anonymousclasses.tests" description="Compile module AnonymousClasses"/>
+  
+  <target name="compile.module.anonymousclasses.production" depends="register.custom.compilers" description="Compile module AnonymousClasses; production classes">
+    <mkdir dir="${anonymousclasses.output.dir}"/>
+    <javac2 destdir="${anonymousclasses.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.anonymousclasses}/javac">
+      <compilerarg line="${compiler.args.anonymousclasses}"/>
+      <bootclasspath refid="anonymousclasses.module.bootclasspath"/>
+      <classpath refid="anonymousclasses.module.production.classpath"/>
+      <src refid="anonymousclasses.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.anonymousclasses"/>
+    </javac2>
+    
+    <copy todir="${anonymousclasses.output.dir}">
+      <fileset dir="${module.anonymousclasses.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.anonymousclasses.tests" depends="register.custom.compilers,compile.module.anonymousclasses.production" description="compile module AnonymousClasses; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.anonymousclasses" description="cleanup module">
+    <delete dir="${anonymousclasses.output.dir}"/>
+    <delete dir="${anonymousclasses.testoutput.dir}"/>
+  </target>
+</project>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_tutorials" default="compile.module.tutorials">
+    <dirname property="module.tutorials.basedir" file="${ant.file.module_tutorials}"/>
+
+    <property name="module.jdk.home.tutorials" value="${project.jdk.home}"/>
+    <property name="module.jdk.bin.tutorials" value="${project.jdk.bin}"/>
+    <property name="module.jdk.classpath.tutorials" value="${project.jdk.classpath}"/>
+
+    <property name="compiler.args.tutorials" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+
+    <property name="tutorials.output.dir" value="${module.tutorials.basedir}/../out/production/tutorials"/>
+    <property name="tutorials.testoutput.dir" value="${module.tutorials.basedir}/../out/test/tutorials"/>
+
+    <path id="tutorials.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="tutorials.module.production.classpath">
+        <path refid="${module.jdk.classpath.tutorials}"/>
+    </path>
+
+    <path id="tutorials.runtime.production.module.classpath">
+        <pathelement location="${tutorials.output.dir}"/>
+    </path>
+
+    <path id="tutorials.module.classpath">
+        <path refid="${module.jdk.classpath.tutorials}"/>
+        <pathelement location="${tutorials.output.dir}"/>
+    </path>
+
+    <path id="tutorials.runtime.module.classpath">
+        <pathelement location="${tutorials.testoutput.dir}"/>
+        <pathelement location="${tutorials.output.dir}"/>
+    </path>
+
+
+    <patternset id="excluded.from.module.tutorials">
+        <patternset refid="ignored.files"/>
+    </patternset>
+
+    <patternset id="excluded.from.compilation.tutorials">
+        <patternset refid="excluded.from.module.tutorials"/>
+    </patternset>
+
+    <path id="tutorials.module.sourcepath">
+        <dirset dir="${module.tutorials.basedir}">
+            <include name="src"/>
+        </dirset>
+    </path>
+
+
+    <target name="compile.module.tutorials" depends="compile.module.tutorials.production,compile.module.tutorials.tests"
+            description="Compile module tutorials"/>
+
+    <target name="compile.module.tutorials.production" depends="register.custom.compilers"
+            description="Compile module tutorials; production classes">
+        <mkdir dir="${tutorials.output.dir}"/>
+        <javac2 destdir="${tutorials.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
+                memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.tutorials}/javac">
+            <compilerarg line="${compiler.args.tutorials}"/>
+            <bootclasspath refid="tutorials.module.bootclasspath"/>
+            <classpath refid="tutorials.module.production.classpath"/>
+            <src refid="tutorials.module.sourcepath"/>
+            <patternset refid="excluded.from.compilation.tutorials"/>
+        </javac2>
+
+        <copy todir="${tutorials.output.dir}">
+            <fileset dir="${module.tutorials.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile.module.tutorials.tests"
+            depends="register.custom.compilers,compile.module.tutorials.production"
+            description="compile module tutorials; test classes" unless="skip.tests"/>
+
+    <target name="clean.module.tutorials" description="cleanup module">
+        <delete dir="${tutorials.output.dir}"/>
+        <delete dir="${tutorials.testoutput.dir}"/>
+    </target>
+</project>

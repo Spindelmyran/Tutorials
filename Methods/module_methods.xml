@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_methods" default="compile.module.methods">
+  <dirname property="module.methods.basedir" file="${ant.file.module_methods}"/>
+  
+  <property name="module.jdk.home.methods" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.methods" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.methods" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.methods" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="methods.output.dir" value="${module.methods.basedir}/../out/production/Methods"/>
+  <property name="methods.testoutput.dir" value="${module.methods.basedir}/../out/test/Methods"/>
+  
+  <path id="methods.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="methods.module.production.classpath">
+    <path refid="${module.jdk.classpath.methods}"/>
+  </path>
+  
+  <path id="methods.runtime.production.module.classpath">
+    <pathelement location="${methods.output.dir}"/>
+  </path>
+  
+  <path id="methods.module.classpath">
+    <path refid="${module.jdk.classpath.methods}"/>
+    <pathelement location="${methods.output.dir}"/>
+  </path>
+  
+  <path id="methods.runtime.module.classpath">
+    <pathelement location="${methods.testoutput.dir}"/>
+    <pathelement location="${methods.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.methods">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.methods">
+    <patternset refid="excluded.from.module.methods"/>
+  </patternset>
+  
+  <path id="methods.module.sourcepath">
+    <dirset dir="${module.methods.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.methods" depends="compile.module.methods.production,compile.module.methods.tests" description="Compile module Methods"/>
+  
+  <target name="compile.module.methods.production" depends="register.custom.compilers" description="Compile module Methods; production classes">
+    <mkdir dir="${methods.output.dir}"/>
+    <javac2 destdir="${methods.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.methods}/javac">
+      <compilerarg line="${compiler.args.methods}"/>
+      <bootclasspath refid="methods.module.bootclasspath"/>
+      <classpath refid="methods.module.production.classpath"/>
+      <src refid="methods.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.methods"/>
+    </javac2>
+    
+    <copy todir="${methods.output.dir}">
+      <fileset dir="${module.methods.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.methods.tests" depends="register.custom.compilers,compile.module.methods.production" description="compile module Methods; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.methods" description="cleanup module">
+    <delete dir="${methods.output.dir}"/>
+    <delete dir="${methods.testoutput.dir}"/>
+  </target>
+</project>

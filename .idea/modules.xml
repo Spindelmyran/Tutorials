@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AnonymousClasses/AnonymousClasses.iml" filepath="$PROJECT_DIR$/AnonymousClasses/AnonymousClasses.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CastingNumVal/CastingNumVal.iml" filepath="$PROJECT_DIR$/CastingNumVal/CastingNumVal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Constructors/Constructors.iml" filepath="$PROJECT_DIR$/Constructors/Constructors.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Encapsulation/Encapsulation.iml" filepath="$PROJECT_DIR$/Encapsulation/Encapsulation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Generics/Generics.iml" filepath="$PROJECT_DIR$/Generics/Generics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GenericsWildcards/GenericsWildcards.iml" filepath="$PROJECT_DIR$/GenericsWildcards/GenericsWildcards.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GettersAndReturnValues/GettersAndReturnValues.iml" filepath="$PROJECT_DIR$/GettersAndReturnValues/GettersAndReturnValues.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HandlingExceptions/HandlingExceptions.iml" filepath="$PROJECT_DIR$/HandlingExceptions/HandlingExceptions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HashMap/HashMap.iml" filepath="$PROJECT_DIR$/HashMap/HashMap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HashSet/HashSet.iml" filepath="$PROJECT_DIR$/HashSet/HashSet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Inheritance/Inheritance.iml" filepath="$PROJECT_DIR$/Inheritance/Inheritance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Interfaces/Interfaces.iml" filepath="$PROJECT_DIR$/Interfaces/Interfaces.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MapKeysCustomObjects/MapKeysCustomObjects.iml" filepath="$PROJECT_DIR$/MapKeysCustomObjects/MapKeysCustomObjects.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Methods/Methods.iml" filepath="$PROJECT_DIR$/Methods/Methods.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Polymorphism/Polymorphism.iml" filepath="$PROJECT_DIR$/Polymorphism/Polymorphism.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PubPriPro/PubPriPro.iml" filepath="$PROJECT_DIR$/PubPriPro/PubPriPro.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Que/Que.iml" filepath="$PROJECT_DIR$/Que/Que.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ReadingFiles/ReadingFiles.iml" filepath="$PROJECT_DIR$/ReadingFiles/ReadingFiles.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ReadingFilesWithFilesReader/ReadingFilesWithFilesReader.iml" filepath="$PROJECT_DIR$/ReadingFilesWithFilesReader/ReadingFilesWithFilesReader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SettersAndThis/SettersAndThis.iml" filepath="$PROJECT_DIR$/SettersAndThis/SettersAndThis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SortedMaps/SortedMaps.iml" filepath="$PROJECT_DIR$/SortedMaps/SortedMaps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sorting/Sorting.iml" filepath="$PROJECT_DIR$/Sorting/Sorting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StaticAndFinal/StaticAndFinal.iml" filepath="$PROJECT_DIR$/StaticAndFinal/StaticAndFinal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StringBuilder-Formatting/StringBuilder-Formatting.iml" filepath="$PROJECT_DIR$/StringBuilder-Formatting/StringBuilder-Formatting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ToString/ToString.iml" filepath="$PROJECT_DIR$/ToString/ToString.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TryDelete/TryDelete.iml" filepath="$PROJECT_DIR$/TryDelete/TryDelete.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UpcastingDowncasting/UpcastingDowncasting.iml" filepath="$PROJECT_DIR$/UpcastingDowncasting/UpcastingDowncasting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/UrlLibrary/UrlLibrary.iml" filepath="$PROJECT_DIR$/UrlLibrary/UrlLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Wserver/src/Wserver.iml" filepath="$PROJECT_DIR$/Wserver/src/Wserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.cakes/com.cakes.iml" filepath="$PROJECT_DIR$/com.cakes/com.cakes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.journaldev.design.builder/com.journaldev.design.builder.iml" filepath="$PROJECT_DIR$/com.journaldev.design.builder/com.journaldev.design.builder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tutorials/tutorials.iml" filepath="$PROJECT_DIR$/tutorials/tutorials.iml" />
+    </modules>
+  </component>
+</project>

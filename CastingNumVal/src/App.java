@@ -14,17 +14,17 @@ public class App {
         float floatValue2 = (float)99.3;
         double doubleValue = 32.4;
          
-        System.out.println(Byte.MAX_VALUE);
+        System.out.println("Byte.MAX_VALUE: "+Byte.MAX_VALUE);
          
         intValue = (int)longValue;
          
-        System.out.println(intValue);
+        System.out.println("intValue: "+intValue);
          
         doubleValue = intValue;
-        System.out.println(doubleValue);
+        System.out.println("doubleValue: "+doubleValue);
          
         intValue = (int)floatValue;
-        System.out.println(intValue);
+        System.out.println("intValue: "+intValue);
      
      
         // The following won't work as we expect it to!!

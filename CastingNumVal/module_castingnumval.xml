@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_castingnumval" default="compile.module.castingnumval">
+  <dirname property="module.castingnumval.basedir" file="${ant.file.module_castingnumval}"/>
+  
+  <property name="module.jdk.home.castingnumval" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.castingnumval" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.castingnumval" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.castingnumval" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="castingnumval.output.dir" value="${module.castingnumval.basedir}/../out/production/CastingNumVal"/>
+  <property name="castingnumval.testoutput.dir" value="${module.castingnumval.basedir}/../out/test/CastingNumVal"/>
+  
+  <path id="castingnumval.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="castingnumval.module.production.classpath">
+    <path refid="${module.jdk.classpath.castingnumval}"/>
+  </path>
+  
+  <path id="castingnumval.runtime.production.module.classpath">
+    <pathelement location="${castingnumval.output.dir}"/>
+  </path>
+  
+  <path id="castingnumval.module.classpath">
+    <path refid="${module.jdk.classpath.castingnumval}"/>
+    <pathelement location="${castingnumval.output.dir}"/>
+  </path>
+  
+  <path id="castingnumval.runtime.module.classpath">
+    <pathelement location="${castingnumval.testoutput.dir}"/>
+    <pathelement location="${castingnumval.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.castingnumval">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.castingnumval">
+    <patternset refid="excluded.from.module.castingnumval"/>
+  </patternset>
+  
+  <path id="castingnumval.module.sourcepath">
+    <dirset dir="${module.castingnumval.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.castingnumval" depends="compile.module.castingnumval.production,compile.module.castingnumval.tests" description="Compile module CastingNumVal"/>
+  
+  <target name="compile.module.castingnumval.production" depends="register.custom.compilers" description="Compile module CastingNumVal; production classes">
+    <mkdir dir="${castingnumval.output.dir}"/>
+    <javac2 destdir="${castingnumval.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.castingnumval}/javac">
+      <compilerarg line="${compiler.args.castingnumval}"/>
+      <bootclasspath refid="castingnumval.module.bootclasspath"/>
+      <classpath refid="castingnumval.module.production.classpath"/>
+      <src refid="castingnumval.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.castingnumval"/>
+    </javac2>
+    
+    <copy todir="${castingnumval.output.dir}">
+      <fileset dir="${module.castingnumval.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.castingnumval.tests" depends="register.custom.compilers,compile.module.castingnumval.production" description="compile module CastingNumVal; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.castingnumval" description="cleanup module">
+    <delete dir="${castingnumval.output.dir}"/>
+    <delete dir="${castingnumval.testoutput.dir}"/>
+  </target>
+</project>

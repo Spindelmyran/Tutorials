@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_wserver" default="compile.module.wserver">
+  <dirname property="module.wserver.basedir" file="${ant.file.module_wserver}"/>
+  
+  <property name="module.jdk.home.wserver" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.wserver" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.wserver" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.wserver" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="wserver.output.dir" value="${module.wserver.basedir}/../../out/production/Wserver"/>
+  <property name="wserver.testoutput.dir" value="${module.wserver.basedir}/../../out/test/Wserver"/>
+  
+  <path id="wserver.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="wserver.module.production.classpath">
+    <path refid="${module.jdk.classpath.wserver}"/>
+  </path>
+  
+  <path id="wserver.runtime.production.module.classpath">
+    <pathelement location="${wserver.output.dir}"/>
+  </path>
+  
+  <path id="wserver.module.classpath">
+    <path refid="${module.jdk.classpath.wserver}"/>
+    <pathelement location="${wserver.output.dir}"/>
+  </path>
+  
+  <path id="wserver.runtime.module.classpath">
+    <pathelement location="${wserver.testoutput.dir}"/>
+    <pathelement location="${wserver.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.wserver">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.wserver">
+    <patternset refid="excluded.from.module.wserver"/>
+  </patternset>
+  
+  <path id="wserver.module.sourcepath">
+    <dirset dir="${module.wserver.basedir}">
+      <include name="wserver"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.wserver" depends="compile.module.wserver.production,compile.module.wserver.tests" description="Compile module Wserver"/>
+  
+  <target name="compile.module.wserver.production" depends="register.custom.compilers" description="Compile module Wserver; production classes">
+    <mkdir dir="${wserver.output.dir}"/>
+    <javac2 destdir="${wserver.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.wserver}/javac">
+      <compilerarg line="${compiler.args.wserver}"/>
+      <bootclasspath refid="wserver.module.bootclasspath"/>
+      <classpath refid="wserver.module.production.classpath"/>
+      <src refid="wserver.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.wserver"/>
+    </javac2>
+    
+    <copy todir="${wserver.output.dir}">
+      <fileset dir="${module.wserver.basedir}/wserver">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.wserver.tests" depends="register.custom.compilers,compile.module.wserver.production" description="compile module Wserver; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.wserver" description="cleanup module">
+    <delete dir="${wserver.output.dir}"/>
+    <delete dir="${wserver.testoutput.dir}"/>
+  </target>
+</project>

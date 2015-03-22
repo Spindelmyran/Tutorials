@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_polymorphism" default="compile.module.polymorphism">
+  <dirname property="module.polymorphism.basedir" file="${ant.file.module_polymorphism}"/>
+  
+  <property name="module.jdk.home.polymorphism" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.polymorphism" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.polymorphism" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.polymorphism" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="polymorphism.output.dir" value="${module.polymorphism.basedir}/../out/production/Polymorphism"/>
+  <property name="polymorphism.testoutput.dir" value="${module.polymorphism.basedir}/../out/test/Polymorphism"/>
+  
+  <path id="polymorphism.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="polymorphism.module.production.classpath">
+    <path refid="${module.jdk.classpath.polymorphism}"/>
+  </path>
+  
+  <path id="polymorphism.runtime.production.module.classpath">
+    <pathelement location="${polymorphism.output.dir}"/>
+  </path>
+  
+  <path id="polymorphism.module.classpath">
+    <path refid="${module.jdk.classpath.polymorphism}"/>
+    <pathelement location="${polymorphism.output.dir}"/>
+  </path>
+  
+  <path id="polymorphism.runtime.module.classpath">
+    <pathelement location="${polymorphism.testoutput.dir}"/>
+    <pathelement location="${polymorphism.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.polymorphism">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.polymorphism">
+    <patternset refid="excluded.from.module.polymorphism"/>
+  </patternset>
+  
+  <path id="polymorphism.module.sourcepath">
+    <dirset dir="${module.polymorphism.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.polymorphism" depends="compile.module.polymorphism.production,compile.module.polymorphism.tests" description="Compile module Polymorphism"/>
+  
+  <target name="compile.module.polymorphism.production" depends="register.custom.compilers" description="Compile module Polymorphism; production classes">
+    <mkdir dir="${polymorphism.output.dir}"/>
+    <javac2 destdir="${polymorphism.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.polymorphism}/javac">
+      <compilerarg line="${compiler.args.polymorphism}"/>
+      <bootclasspath refid="polymorphism.module.bootclasspath"/>
+      <classpath refid="polymorphism.module.production.classpath"/>
+      <src refid="polymorphism.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.polymorphism"/>
+    </javac2>
+    
+    <copy todir="${polymorphism.output.dir}">
+      <fileset dir="${module.polymorphism.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.polymorphism.tests" depends="register.custom.compilers,compile.module.polymorphism.production" description="compile module Polymorphism; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.polymorphism" description="cleanup module">
+    <delete dir="${polymorphism.output.dir}"/>
+    <delete dir="${polymorphism.testoutput.dir}"/>
+  </target>
+</project>

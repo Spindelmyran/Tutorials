@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_handlingexceptions" default="compile.module.handlingexceptions">
+  <dirname property="module.handlingexceptions.basedir" file="${ant.file.module_handlingexceptions}"/>
+  
+  <property name="module.jdk.home.handlingexceptions" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.handlingexceptions" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.handlingexceptions" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.handlingexceptions" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="handlingexceptions.output.dir" value="${module.handlingexceptions.basedir}/../out/production/HandlingExceptions"/>
+  <property name="handlingexceptions.testoutput.dir" value="${module.handlingexceptions.basedir}/../out/test/HandlingExceptions"/>
+  
+  <path id="handlingexceptions.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="handlingexceptions.module.production.classpath">
+    <path refid="${module.jdk.classpath.handlingexceptions}"/>
+  </path>
+  
+  <path id="handlingexceptions.runtime.production.module.classpath">
+    <pathelement location="${handlingexceptions.output.dir}"/>
+  </path>
+  
+  <path id="handlingexceptions.module.classpath">
+    <path refid="${module.jdk.classpath.handlingexceptions}"/>
+    <pathelement location="${handlingexceptions.output.dir}"/>
+  </path>
+  
+  <path id="handlingexceptions.runtime.module.classpath">
+    <pathelement location="${handlingexceptions.testoutput.dir}"/>
+    <pathelement location="${handlingexceptions.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.handlingexceptions">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.handlingexceptions">
+    <patternset refid="excluded.from.module.handlingexceptions"/>
+  </patternset>
+  
+  <path id="handlingexceptions.module.sourcepath">
+    <dirset dir="${module.handlingexceptions.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.handlingexceptions" depends="compile.module.handlingexceptions.production,compile.module.handlingexceptions.tests" description="Compile module HandlingExceptions"/>
+  
+  <target name="compile.module.handlingexceptions.production" depends="register.custom.compilers" description="Compile module HandlingExceptions; production classes">
+    <mkdir dir="${handlingexceptions.output.dir}"/>
+    <javac2 destdir="${handlingexceptions.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.handlingexceptions}/javac">
+      <compilerarg line="${compiler.args.handlingexceptions}"/>
+      <bootclasspath refid="handlingexceptions.module.bootclasspath"/>
+      <classpath refid="handlingexceptions.module.production.classpath"/>
+      <src refid="handlingexceptions.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.handlingexceptions"/>
+    </javac2>
+    
+    <copy todir="${handlingexceptions.output.dir}">
+      <fileset dir="${module.handlingexceptions.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.handlingexceptions.tests" depends="register.custom.compilers,compile.module.handlingexceptions.production" description="compile module HandlingExceptions; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.handlingexceptions" description="cleanup module">
+    <delete dir="${handlingexceptions.output.dir}"/>
+    <delete dir="${handlingexceptions.testoutput.dir}"/>
+  </target>
+</project>

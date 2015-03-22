@@ -10,7 +10,7 @@ public class Demo {
 		mealDirector.constructMeal();
 		Meal meal = mealDirector.getMeal();
 		System.out.println("meal is: " + meal);
-		
+		//
 		mealBuilder = new JapaneseMealBuilder();
 		mealDirector = new MealDirector(mealBuilder);
 		mealDirector.constructMeal();

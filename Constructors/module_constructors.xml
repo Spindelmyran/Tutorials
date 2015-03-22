@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_constructors" default="compile.module.constructors">
+  <dirname property="module.constructors.basedir" file="${ant.file.module_constructors}"/>
+  
+  <property name="module.jdk.home.constructors" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.constructors" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.constructors" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.constructors" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="constructors.output.dir" value="${module.constructors.basedir}/../out/production/Constructors"/>
+  <property name="constructors.testoutput.dir" value="${module.constructors.basedir}/../out/test/Constructors"/>
+  
+  <path id="constructors.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="constructors.module.production.classpath">
+    <path refid="${module.jdk.classpath.constructors}"/>
+  </path>
+  
+  <path id="constructors.runtime.production.module.classpath">
+    <pathelement location="${constructors.output.dir}"/>
+  </path>
+  
+  <path id="constructors.module.classpath">
+    <path refid="${module.jdk.classpath.constructors}"/>
+    <pathelement location="${constructors.output.dir}"/>
+  </path>
+  
+  <path id="constructors.runtime.module.classpath">
+    <pathelement location="${constructors.testoutput.dir}"/>
+    <pathelement location="${constructors.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.constructors">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.constructors">
+    <patternset refid="excluded.from.module.constructors"/>
+  </patternset>
+  
+  <path id="constructors.module.sourcepath">
+    <dirset dir="${module.constructors.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.constructors" depends="compile.module.constructors.production,compile.module.constructors.tests" description="Compile module Constructors"/>
+  
+  <target name="compile.module.constructors.production" depends="register.custom.compilers" description="Compile module Constructors; production classes">
+    <mkdir dir="${constructors.output.dir}"/>
+    <javac2 destdir="${constructors.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.constructors}/javac">
+      <compilerarg line="${compiler.args.constructors}"/>
+      <bootclasspath refid="constructors.module.bootclasspath"/>
+      <classpath refid="constructors.module.production.classpath"/>
+      <src refid="constructors.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.constructors"/>
+    </javac2>
+    
+    <copy todir="${constructors.output.dir}">
+      <fileset dir="${module.constructors.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.constructors.tests" depends="register.custom.compilers,compile.module.constructors.production" description="compile module Constructors; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.constructors" description="cleanup module">
+    <delete dir="${constructors.output.dir}"/>
+    <delete dir="${constructors.testoutput.dir}"/>
+  </target>
+</project>

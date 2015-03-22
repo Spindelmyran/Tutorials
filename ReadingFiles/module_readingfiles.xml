@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_readingfiles" default="compile.module.readingfiles">
+  <dirname property="module.readingfiles.basedir" file="${ant.file.module_readingfiles}"/>
+  
+  <property name="module.jdk.home.readingfiles" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.readingfiles" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.readingfiles" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.readingfiles" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="readingfiles.output.dir" value="${module.readingfiles.basedir}/../out/production/ReadingFiles"/>
+  <property name="readingfiles.testoutput.dir" value="${module.readingfiles.basedir}/../out/test/ReadingFiles"/>
+  
+  <path id="readingfiles.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="readingfiles.module.production.classpath">
+    <path refid="${module.jdk.classpath.readingfiles}"/>
+  </path>
+  
+  <path id="readingfiles.runtime.production.module.classpath">
+    <pathelement location="${readingfiles.output.dir}"/>
+  </path>
+  
+  <path id="readingfiles.module.classpath">
+    <path refid="${module.jdk.classpath.readingfiles}"/>
+    <pathelement location="${readingfiles.output.dir}"/>
+  </path>
+  
+  <path id="readingfiles.runtime.module.classpath">
+    <pathelement location="${readingfiles.testoutput.dir}"/>
+    <pathelement location="${readingfiles.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.readingfiles">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.readingfiles">
+    <patternset refid="excluded.from.module.readingfiles"/>
+  </patternset>
+  
+  <path id="readingfiles.module.sourcepath">
+    <dirset dir="${module.readingfiles.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.readingfiles" depends="compile.module.readingfiles.production,compile.module.readingfiles.tests" description="Compile module ReadingFiles"/>
+  
+  <target name="compile.module.readingfiles.production" depends="register.custom.compilers" description="Compile module ReadingFiles; production classes">
+    <mkdir dir="${readingfiles.output.dir}"/>
+    <javac2 destdir="${readingfiles.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.readingfiles}/javac">
+      <compilerarg line="${compiler.args.readingfiles}"/>
+      <bootclasspath refid="readingfiles.module.bootclasspath"/>
+      <classpath refid="readingfiles.module.production.classpath"/>
+      <src refid="readingfiles.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.readingfiles"/>
+    </javac2>
+    
+    <copy todir="${readingfiles.output.dir}">
+      <fileset dir="${module.readingfiles.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.readingfiles.tests" depends="register.custom.compilers,compile.module.readingfiles.production" description="compile module ReadingFiles; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.readingfiles" description="cleanup module">
+    <delete dir="${readingfiles.output.dir}"/>
+    <delete dir="${readingfiles.testoutput.dir}"/>
+  </target>
+</project>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_inheritance" default="compile.module.inheritance">
+  <dirname property="module.inheritance.basedir" file="${ant.file.module_inheritance}"/>
+  
+  <property name="module.jdk.home.inheritance" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.inheritance" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.inheritance" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.inheritance" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="inheritance.output.dir" value="${module.inheritance.basedir}/../out/production/Inheritance"/>
+  <property name="inheritance.testoutput.dir" value="${module.inheritance.basedir}/../out/test/Inheritance"/>
+  
+  <path id="inheritance.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="inheritance.module.production.classpath">
+    <path refid="${module.jdk.classpath.inheritance}"/>
+  </path>
+  
+  <path id="inheritance.runtime.production.module.classpath">
+    <pathelement location="${inheritance.output.dir}"/>
+  </path>
+  
+  <path id="inheritance.module.classpath">
+    <path refid="${module.jdk.classpath.inheritance}"/>
+    <pathelement location="${inheritance.output.dir}"/>
+  </path>
+  
+  <path id="inheritance.runtime.module.classpath">
+    <pathelement location="${inheritance.testoutput.dir}"/>
+    <pathelement location="${inheritance.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.inheritance">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.inheritance">
+    <patternset refid="excluded.from.module.inheritance"/>
+  </patternset>
+  
+  <path id="inheritance.module.sourcepath">
+    <dirset dir="${module.inheritance.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.inheritance" depends="compile.module.inheritance.production,compile.module.inheritance.tests" description="Compile module Inheritance"/>
+  
+  <target name="compile.module.inheritance.production" depends="register.custom.compilers" description="Compile module Inheritance; production classes">
+    <mkdir dir="${inheritance.output.dir}"/>
+    <javac2 destdir="${inheritance.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.inheritance}/javac">
+      <compilerarg line="${compiler.args.inheritance}"/>
+      <bootclasspath refid="inheritance.module.bootclasspath"/>
+      <classpath refid="inheritance.module.production.classpath"/>
+      <src refid="inheritance.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.inheritance"/>
+    </javac2>
+    
+    <copy todir="${inheritance.output.dir}">
+      <fileset dir="${module.inheritance.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.inheritance.tests" depends="register.custom.compilers,compile.module.inheritance.production" description="compile module Inheritance; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.inheritance" description="cleanup module">
+    <delete dir="${inheritance.output.dir}"/>
+    <delete dir="${inheritance.testoutput.dir}"/>
+  </target>
+</project>

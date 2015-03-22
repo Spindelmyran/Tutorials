@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_stringbuilder-formatting" default="compile.module.stringbuilder-formatting">
+  <dirname property="module.stringbuilder-formatting.basedir" file="${ant.file.module_stringbuilder-formatting}"/>
+  
+  <property name="module.jdk.home.stringbuilder-formatting" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.stringbuilder-formatting" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.stringbuilder-formatting" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.stringbuilder-formatting" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="stringbuilder-formatting.output.dir" value="${module.stringbuilder-formatting.basedir}/../out/production/StringBuilder-Formatting"/>
+  <property name="stringbuilder-formatting.testoutput.dir" value="${module.stringbuilder-formatting.basedir}/../out/test/StringBuilder-Formatting"/>
+  
+  <path id="stringbuilder-formatting.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="stringbuilder-formatting.module.production.classpath">
+    <path refid="${module.jdk.classpath.stringbuilder-formatting}"/>
+  </path>
+  
+  <path id="stringbuilder-formatting.runtime.production.module.classpath">
+    <pathelement location="${stringbuilder-formatting.output.dir}"/>
+  </path>
+  
+  <path id="stringbuilder-formatting.module.classpath">
+    <path refid="${module.jdk.classpath.stringbuilder-formatting}"/>
+    <pathelement location="${stringbuilder-formatting.output.dir}"/>
+  </path>
+  
+  <path id="stringbuilder-formatting.runtime.module.classpath">
+    <pathelement location="${stringbuilder-formatting.testoutput.dir}"/>
+    <pathelement location="${stringbuilder-formatting.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.stringbuilder-formatting">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.stringbuilder-formatting">
+    <patternset refid="excluded.from.module.stringbuilder-formatting"/>
+  </patternset>
+  
+  <path id="stringbuilder-formatting.module.sourcepath">
+    <dirset dir="${module.stringbuilder-formatting.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.stringbuilder-formatting" depends="compile.module.stringbuilder-formatting.production,compile.module.stringbuilder-formatting.tests" description="Compile module StringBuilder-Formatting"/>
+  
+  <target name="compile.module.stringbuilder-formatting.production" depends="register.custom.compilers" description="Compile module StringBuilder-Formatting; production classes">
+    <mkdir dir="${stringbuilder-formatting.output.dir}"/>
+    <javac2 destdir="${stringbuilder-formatting.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.stringbuilder-formatting}/javac">
+      <compilerarg line="${compiler.args.stringbuilder-formatting}"/>
+      <bootclasspath refid="stringbuilder-formatting.module.bootclasspath"/>
+      <classpath refid="stringbuilder-formatting.module.production.classpath"/>
+      <src refid="stringbuilder-formatting.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.stringbuilder-formatting"/>
+    </javac2>
+    
+    <copy todir="${stringbuilder-formatting.output.dir}">
+      <fileset dir="${module.stringbuilder-formatting.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.stringbuilder-formatting.tests" depends="register.custom.compilers,compile.module.stringbuilder-formatting.production" description="compile module StringBuilder-Formatting; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.stringbuilder-formatting" description="cleanup module">
+    <delete dir="${stringbuilder-formatting.output.dir}"/>
+    <delete dir="${stringbuilder-formatting.testoutput.dir}"/>
+  </target>
+</project>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_interfaces" default="compile.module.interfaces">
+  <dirname property="module.interfaces.basedir" file="${ant.file.module_interfaces}"/>
+  
+  <property name="module.jdk.home.interfaces" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.interfaces" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.interfaces" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.interfaces" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="interfaces.output.dir" value="${module.interfaces.basedir}/../out/production/Interfaces"/>
+  <property name="interfaces.testoutput.dir" value="${module.interfaces.basedir}/../out/test/Interfaces"/>
+  
+  <path id="interfaces.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="interfaces.module.production.classpath">
+    <path refid="${module.jdk.classpath.interfaces}"/>
+  </path>
+  
+  <path id="interfaces.runtime.production.module.classpath">
+    <pathelement location="${interfaces.output.dir}"/>
+  </path>
+  
+  <path id="interfaces.module.classpath">
+    <path refid="${module.jdk.classpath.interfaces}"/>
+    <pathelement location="${interfaces.output.dir}"/>
+  </path>
+  
+  <path id="interfaces.runtime.module.classpath">
+    <pathelement location="${interfaces.testoutput.dir}"/>
+    <pathelement location="${interfaces.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.interfaces">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.interfaces">
+    <patternset refid="excluded.from.module.interfaces"/>
+  </patternset>
+  
+  <path id="interfaces.module.sourcepath">
+    <dirset dir="${module.interfaces.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.interfaces" depends="compile.module.interfaces.production,compile.module.interfaces.tests" description="Compile module Interfaces"/>
+  
+  <target name="compile.module.interfaces.production" depends="register.custom.compilers" description="Compile module Interfaces; production classes">
+    <mkdir dir="${interfaces.output.dir}"/>
+    <javac2 destdir="${interfaces.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.interfaces}/javac">
+      <compilerarg line="${compiler.args.interfaces}"/>
+      <bootclasspath refid="interfaces.module.bootclasspath"/>
+      <classpath refid="interfaces.module.production.classpath"/>
+      <src refid="interfaces.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.interfaces"/>
+    </javac2>
+    
+    <copy todir="${interfaces.output.dir}">
+      <fileset dir="${module.interfaces.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.interfaces.tests" depends="register.custom.compilers,compile.module.interfaces.production" description="compile module Interfaces; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.interfaces" description="cleanup module">
+    <delete dir="${interfaces.output.dir}"/>
+    <delete dir="${interfaces.testoutput.dir}"/>
+  </target>
+</project>

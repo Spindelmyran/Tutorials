@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_genericswildcards" default="compile.module.genericswildcards">
+  <dirname property="module.genericswildcards.basedir" file="${ant.file.module_genericswildcards}"/>
+  
+  <property name="module.jdk.home.genericswildcards" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.genericswildcards" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.genericswildcards" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.genericswildcards" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="genericswildcards.output.dir" value="${module.genericswildcards.basedir}/../out/production/GenericsWildcards"/>
+  <property name="genericswildcards.testoutput.dir" value="${module.genericswildcards.basedir}/../out/test/GenericsWildcards"/>
+  
+  <path id="genericswildcards.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="genericswildcards.module.production.classpath">
+    <path refid="${module.jdk.classpath.genericswildcards}"/>
+  </path>
+  
+  <path id="genericswildcards.runtime.production.module.classpath">
+    <pathelement location="${genericswildcards.output.dir}"/>
+  </path>
+  
+  <path id="genericswildcards.module.classpath">
+    <path refid="${module.jdk.classpath.genericswildcards}"/>
+    <pathelement location="${genericswildcards.output.dir}"/>
+  </path>
+  
+  <path id="genericswildcards.runtime.module.classpath">
+    <pathelement location="${genericswildcards.testoutput.dir}"/>
+    <pathelement location="${genericswildcards.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.genericswildcards">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.genericswildcards">
+    <patternset refid="excluded.from.module.genericswildcards"/>
+  </patternset>
+  
+  <path id="genericswildcards.module.sourcepath">
+    <dirset dir="${module.genericswildcards.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.genericswildcards" depends="compile.module.genericswildcards.production,compile.module.genericswildcards.tests" description="Compile module GenericsWildcards"/>
+  
+  <target name="compile.module.genericswildcards.production" depends="register.custom.compilers" description="Compile module GenericsWildcards; production classes">
+    <mkdir dir="${genericswildcards.output.dir}"/>
+    <javac2 destdir="${genericswildcards.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.genericswildcards}/javac">
+      <compilerarg line="${compiler.args.genericswildcards}"/>
+      <bootclasspath refid="genericswildcards.module.bootclasspath"/>
+      <classpath refid="genericswildcards.module.production.classpath"/>
+      <src refid="genericswildcards.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.genericswildcards"/>
+    </javac2>
+    
+    <copy todir="${genericswildcards.output.dir}">
+      <fileset dir="${module.genericswildcards.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.genericswildcards.tests" depends="register.custom.compilers,compile.module.genericswildcards.production" description="compile module GenericsWildcards; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.genericswildcards" description="cleanup module">
+    <delete dir="${genericswildcards.output.dir}"/>
+    <delete dir="${genericswildcards.testoutput.dir}"/>
+  </target>
+</project>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_mapkeyscustomobjects" default="compile.module.mapkeyscustomobjects">
+  <dirname property="module.mapkeyscustomobjects.basedir" file="${ant.file.module_mapkeyscustomobjects}"/>
+  
+  <property name="module.jdk.home.mapkeyscustomobjects" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.mapkeyscustomobjects" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.mapkeyscustomobjects" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.mapkeyscustomobjects" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="mapkeyscustomobjects.output.dir" value="${module.mapkeyscustomobjects.basedir}/../out/production/MapKeysCustomObjects"/>
+  <property name="mapkeyscustomobjects.testoutput.dir" value="${module.mapkeyscustomobjects.basedir}/../out/test/MapKeysCustomObjects"/>
+  
+  <path id="mapkeyscustomobjects.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="mapkeyscustomobjects.module.production.classpath">
+    <path refid="${module.jdk.classpath.mapkeyscustomobjects}"/>
+  </path>
+  
+  <path id="mapkeyscustomobjects.runtime.production.module.classpath">
+    <pathelement location="${mapkeyscustomobjects.output.dir}"/>
+  </path>
+  
+  <path id="mapkeyscustomobjects.module.classpath">
+    <path refid="${module.jdk.classpath.mapkeyscustomobjects}"/>
+    <pathelement location="${mapkeyscustomobjects.output.dir}"/>
+  </path>
+  
+  <path id="mapkeyscustomobjects.runtime.module.classpath">
+    <pathelement location="${mapkeyscustomobjects.testoutput.dir}"/>
+    <pathelement location="${mapkeyscustomobjects.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.mapkeyscustomobjects">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.mapkeyscustomobjects">
+    <patternset refid="excluded.from.module.mapkeyscustomobjects"/>
+  </patternset>
+  
+  <path id="mapkeyscustomobjects.module.sourcepath">
+    <dirset dir="${module.mapkeyscustomobjects.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.mapkeyscustomobjects" depends="compile.module.mapkeyscustomobjects.production,compile.module.mapkeyscustomobjects.tests" description="Compile module MapKeysCustomObjects"/>
+  
+  <target name="compile.module.mapkeyscustomobjects.production" depends="register.custom.compilers" description="Compile module MapKeysCustomObjects; production classes">
+    <mkdir dir="${mapkeyscustomobjects.output.dir}"/>
+    <javac2 destdir="${mapkeyscustomobjects.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.mapkeyscustomobjects}/javac">
+      <compilerarg line="${compiler.args.mapkeyscustomobjects}"/>
+      <bootclasspath refid="mapkeyscustomobjects.module.bootclasspath"/>
+      <classpath refid="mapkeyscustomobjects.module.production.classpath"/>
+      <src refid="mapkeyscustomobjects.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.mapkeyscustomobjects"/>
+    </javac2>
+    
+    <copy todir="${mapkeyscustomobjects.output.dir}">
+      <fileset dir="${module.mapkeyscustomobjects.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.mapkeyscustomobjects.tests" depends="register.custom.compilers,compile.module.mapkeyscustomobjects.production" description="compile module MapKeysCustomObjects; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.mapkeyscustomobjects" description="cleanup module">
+    <delete dir="${mapkeyscustomobjects.output.dir}"/>
+    <delete dir="${mapkeyscustomobjects.testoutput.dir}"/>
+  </target>
+</project>

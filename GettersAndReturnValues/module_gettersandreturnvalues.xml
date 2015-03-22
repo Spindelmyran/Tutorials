@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_gettersandreturnvalues" default="compile.module.gettersandreturnvalues">
+  <dirname property="module.gettersandreturnvalues.basedir" file="${ant.file.module_gettersandreturnvalues}"/>
+  
+  <property name="module.jdk.home.gettersandreturnvalues" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.gettersandreturnvalues" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.gettersandreturnvalues" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.gettersandreturnvalues" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="gettersandreturnvalues.output.dir" value="${module.gettersandreturnvalues.basedir}/../out/production/GettersAndReturnValues"/>
+  <property name="gettersandreturnvalues.testoutput.dir" value="${module.gettersandreturnvalues.basedir}/../out/test/GettersAndReturnValues"/>
+  
+  <path id="gettersandreturnvalues.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="gettersandreturnvalues.module.production.classpath">
+    <path refid="${module.jdk.classpath.gettersandreturnvalues}"/>
+  </path>
+  
+  <path id="gettersandreturnvalues.runtime.production.module.classpath">
+    <pathelement location="${gettersandreturnvalues.output.dir}"/>
+  </path>
+  
+  <path id="gettersandreturnvalues.module.classpath">
+    <path refid="${module.jdk.classpath.gettersandreturnvalues}"/>
+    <pathelement location="${gettersandreturnvalues.output.dir}"/>
+  </path>
+  
+  <path id="gettersandreturnvalues.runtime.module.classpath">
+    <pathelement location="${gettersandreturnvalues.testoutput.dir}"/>
+    <pathelement location="${gettersandreturnvalues.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.gettersandreturnvalues">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.gettersandreturnvalues">
+    <patternset refid="excluded.from.module.gettersandreturnvalues"/>
+  </patternset>
+  
+  <path id="gettersandreturnvalues.module.sourcepath">
+    <dirset dir="${module.gettersandreturnvalues.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.gettersandreturnvalues" depends="compile.module.gettersandreturnvalues.production,compile.module.gettersandreturnvalues.tests" description="Compile module GettersAndReturnValues"/>
+  
+  <target name="compile.module.gettersandreturnvalues.production" depends="register.custom.compilers" description="Compile module GettersAndReturnValues; production classes">
+    <mkdir dir="${gettersandreturnvalues.output.dir}"/>
+    <javac2 destdir="${gettersandreturnvalues.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.gettersandreturnvalues}/javac">
+      <compilerarg line="${compiler.args.gettersandreturnvalues}"/>
+      <bootclasspath refid="gettersandreturnvalues.module.bootclasspath"/>
+      <classpath refid="gettersandreturnvalues.module.production.classpath"/>
+      <src refid="gettersandreturnvalues.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.gettersandreturnvalues"/>
+    </javac2>
+    
+    <copy todir="${gettersandreturnvalues.output.dir}">
+      <fileset dir="${module.gettersandreturnvalues.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.gettersandreturnvalues.tests" depends="register.custom.compilers,compile.module.gettersandreturnvalues.production" description="compile module GettersAndReturnValues; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.gettersandreturnvalues" description="cleanup module">
+    <delete dir="${gettersandreturnvalues.output.dir}"/>
+    <delete dir="${gettersandreturnvalues.testoutput.dir}"/>
+  </target>
+</project>

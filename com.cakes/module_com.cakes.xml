@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_com.cakes" default="compile.module.com.cakes">
+  <dirname property="module.com.cakes.basedir" file="${ant.file.module_com.cakes}"/>
+  
+  <property name="module.jdk.home.com.cakes" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.com.cakes" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.com.cakes" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.com.cakes" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="com.cakes.output.dir" value="${module.com.cakes.basedir}/../out/production/com.cakes"/>
+  <property name="com.cakes.testoutput.dir" value="${module.com.cakes.basedir}/../out/test/com.cakes"/>
+  
+  <path id="com.cakes.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="com.cakes.module.production.classpath">
+    <path refid="${module.jdk.classpath.com.cakes}"/>
+  </path>
+  
+  <path id="com.cakes.runtime.production.module.classpath">
+    <pathelement location="${com.cakes.output.dir}"/>
+  </path>
+  
+  <path id="com.cakes.module.classpath">
+    <path refid="${module.jdk.classpath.com.cakes}"/>
+    <pathelement location="${com.cakes.output.dir}"/>
+  </path>
+  
+  <path id="com.cakes.runtime.module.classpath">
+    <pathelement location="${com.cakes.testoutput.dir}"/>
+    <pathelement location="${com.cakes.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.com.cakes">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.com.cakes">
+    <patternset refid="excluded.from.module.com.cakes"/>
+  </patternset>
+  
+  <path id="com.cakes.module.sourcepath">
+    <dirset dir="${module.com.cakes.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.com.cakes" depends="compile.module.com.cakes.production,compile.module.com.cakes.tests" description="Compile module com.cakes"/>
+  
+  <target name="compile.module.com.cakes.production" depends="register.custom.compilers" description="Compile module com.cakes; production classes">
+    <mkdir dir="${com.cakes.output.dir}"/>
+    <javac2 destdir="${com.cakes.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.com.cakes}/javac">
+      <compilerarg line="${compiler.args.com.cakes}"/>
+      <bootclasspath refid="com.cakes.module.bootclasspath"/>
+      <classpath refid="com.cakes.module.production.classpath"/>
+      <src refid="com.cakes.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.com.cakes"/>
+    </javac2>
+    
+    <copy todir="${com.cakes.output.dir}">
+      <fileset dir="${module.com.cakes.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.com.cakes.tests" depends="register.custom.compilers,compile.module.com.cakes.production" description="compile module com.cakes; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.com.cakes" description="cleanup module">
+    <delete dir="${com.cakes.output.dir}"/>
+    <delete dir="${com.cakes.testoutput.dir}"/>
+  </target>
+</project>

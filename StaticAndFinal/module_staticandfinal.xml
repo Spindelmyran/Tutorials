@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_staticandfinal" default="compile.module.staticandfinal">
+  <dirname property="module.staticandfinal.basedir" file="${ant.file.module_staticandfinal}"/>
+  
+  <property name="module.jdk.home.staticandfinal" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.staticandfinal" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.staticandfinal" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.staticandfinal" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="staticandfinal.output.dir" value="${module.staticandfinal.basedir}/../out/production/StaticAndFinal"/>
+  <property name="staticandfinal.testoutput.dir" value="${module.staticandfinal.basedir}/../out/test/StaticAndFinal"/>
+  
+  <path id="staticandfinal.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="staticandfinal.module.production.classpath">
+    <path refid="${module.jdk.classpath.staticandfinal}"/>
+  </path>
+  
+  <path id="staticandfinal.runtime.production.module.classpath">
+    <pathelement location="${staticandfinal.output.dir}"/>
+  </path>
+  
+  <path id="staticandfinal.module.classpath">
+    <path refid="${module.jdk.classpath.staticandfinal}"/>
+    <pathelement location="${staticandfinal.output.dir}"/>
+  </path>
+  
+  <path id="staticandfinal.runtime.module.classpath">
+    <pathelement location="${staticandfinal.testoutput.dir}"/>
+    <pathelement location="${staticandfinal.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.staticandfinal">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.staticandfinal">
+    <patternset refid="excluded.from.module.staticandfinal"/>
+  </patternset>
+  
+  <path id="staticandfinal.module.sourcepath">
+    <dirset dir="${module.staticandfinal.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.staticandfinal" depends="compile.module.staticandfinal.production,compile.module.staticandfinal.tests" description="Compile module StaticAndFinal"/>
+  
+  <target name="compile.module.staticandfinal.production" depends="register.custom.compilers" description="Compile module StaticAndFinal; production classes">
+    <mkdir dir="${staticandfinal.output.dir}"/>
+    <javac2 destdir="${staticandfinal.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.staticandfinal}/javac">
+      <compilerarg line="${compiler.args.staticandfinal}"/>
+      <bootclasspath refid="staticandfinal.module.bootclasspath"/>
+      <classpath refid="staticandfinal.module.production.classpath"/>
+      <src refid="staticandfinal.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.staticandfinal"/>
+    </javac2>
+    
+    <copy todir="${staticandfinal.output.dir}">
+      <fileset dir="${module.staticandfinal.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.staticandfinal.tests" depends="register.custom.compilers,compile.module.staticandfinal.production" description="compile module StaticAndFinal; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.staticandfinal" description="cleanup module">
+    <delete dir="${staticandfinal.output.dir}"/>
+    <delete dir="${staticandfinal.testoutput.dir}"/>
+  </target>
+</project>

@@ -13,7 +13,7 @@ public class Switch {
         System.out.println("Please enter a command: ");
         String text = input.nextLine();
 
-        switch (text) {
+       /* switch (text) {
             case "start":
                 System.out.println("Machine started!");
                 break;
@@ -23,7 +23,7 @@ public class Switch {
 
             default:
                 System.out.println("Comman not recognized");
-        }
+        }*/
 
     }
 }

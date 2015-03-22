@@ -14,7 +14,7 @@ class Machine {
         this(name, 0);
 
         System.out.println("Second constructor running");
-        this.name =name;
+        this.name = name;
     }
 
     public Machine(String name, int code) {

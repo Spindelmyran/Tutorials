@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_tostring" default="compile.module.tostring">
+  <dirname property="module.tostring.basedir" file="${ant.file.module_tostring}"/>
+  
+  <property name="module.jdk.home.tostring" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.tostring" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.tostring" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.tostring" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="tostring.output.dir" value="${module.tostring.basedir}/../out/production/ToString"/>
+  <property name="tostring.testoutput.dir" value="${module.tostring.basedir}/../out/test/ToString"/>
+  
+  <path id="tostring.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="tostring.module.production.classpath">
+    <path refid="${module.jdk.classpath.tostring}"/>
+  </path>
+  
+  <path id="tostring.runtime.production.module.classpath">
+    <pathelement location="${tostring.output.dir}"/>
+  </path>
+  
+  <path id="tostring.module.classpath">
+    <path refid="${module.jdk.classpath.tostring}"/>
+    <pathelement location="${tostring.output.dir}"/>
+  </path>
+  
+  <path id="tostring.runtime.module.classpath">
+    <pathelement location="${tostring.testoutput.dir}"/>
+    <pathelement location="${tostring.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.tostring">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.tostring">
+    <patternset refid="excluded.from.module.tostring"/>
+  </patternset>
+  
+  <path id="tostring.module.sourcepath">
+    <dirset dir="${module.tostring.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.tostring" depends="compile.module.tostring.production,compile.module.tostring.tests" description="Compile module ToString"/>
+  
+  <target name="compile.module.tostring.production" depends="register.custom.compilers" description="Compile module ToString; production classes">
+    <mkdir dir="${tostring.output.dir}"/>
+    <javac2 destdir="${tostring.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.tostring}/javac">
+      <compilerarg line="${compiler.args.tostring}"/>
+      <bootclasspath refid="tostring.module.bootclasspath"/>
+      <classpath refid="tostring.module.production.classpath"/>
+      <src refid="tostring.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.tostring"/>
+    </javac2>
+    
+    <copy todir="${tostring.output.dir}">
+      <fileset dir="${module.tostring.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.tostring.tests" depends="register.custom.compilers,compile.module.tostring.production" description="compile module ToString; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.tostring" description="cleanup module">
+    <delete dir="${tostring.output.dir}"/>
+    <delete dir="${tostring.testoutput.dir}"/>
+  </target>
+</project>

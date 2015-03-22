@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_hashset" default="compile.module.hashset">
+  <dirname property="module.hashset.basedir" file="${ant.file.module_hashset}"/>
+  
+  <property name="module.jdk.home.hashset" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.hashset" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.hashset" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.hashset" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="hashset.output.dir" value="${module.hashset.basedir}/../out/production/HashSet"/>
+  <property name="hashset.testoutput.dir" value="${module.hashset.basedir}/../out/test/HashSet"/>
+  
+  <path id="hashset.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="hashset.module.production.classpath">
+    <path refid="${module.jdk.classpath.hashset}"/>
+  </path>
+  
+  <path id="hashset.runtime.production.module.classpath">
+    <pathelement location="${hashset.output.dir}"/>
+  </path>
+  
+  <path id="hashset.module.classpath">
+    <path refid="${module.jdk.classpath.hashset}"/>
+    <pathelement location="${hashset.output.dir}"/>
+  </path>
+  
+  <path id="hashset.runtime.module.classpath">
+    <pathelement location="${hashset.testoutput.dir}"/>
+    <pathelement location="${hashset.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.hashset">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.hashset">
+    <patternset refid="excluded.from.module.hashset"/>
+  </patternset>
+  
+  <path id="hashset.module.sourcepath">
+    <dirset dir="${module.hashset.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.hashset" depends="compile.module.hashset.production,compile.module.hashset.tests" description="Compile module HashSet"/>
+  
+  <target name="compile.module.hashset.production" depends="register.custom.compilers" description="Compile module HashSet; production classes">
+    <mkdir dir="${hashset.output.dir}"/>
+    <javac2 destdir="${hashset.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.hashset}/javac">
+      <compilerarg line="${compiler.args.hashset}"/>
+      <bootclasspath refid="hashset.module.bootclasspath"/>
+      <classpath refid="hashset.module.production.classpath"/>
+      <src refid="hashset.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.hashset"/>
+    </javac2>
+    
+    <copy todir="${hashset.output.dir}">
+      <fileset dir="${module.hashset.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.hashset.tests" depends="register.custom.compilers,compile.module.hashset.production" description="compile module HashSet; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.hashset" description="cleanup module">
+    <delete dir="${hashset.output.dir}"/>
+    <delete dir="${hashset.testoutput.dir}"/>
+  </target>
+</project>

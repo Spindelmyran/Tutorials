@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_pubpripro" default="compile.module.pubpripro">
+  <dirname property="module.pubpripro.basedir" file="${ant.file.module_pubpripro}"/>
+  
+  <property name="module.jdk.home.pubpripro" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.pubpripro" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.pubpripro" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.pubpripro" value="-encoding UTF-8 -source 1.6 ${compiler.args}"/>
+  
+  <property name="pubpripro.output.dir" value="${module.pubpripro.basedir}/../out/production/PubPriPro"/>
+  <property name="pubpripro.testoutput.dir" value="${module.pubpripro.basedir}/../out/test/PubPriPro"/>
+  
+  <path id="pubpripro.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="pubpripro.module.production.classpath">
+    <path refid="${module.jdk.classpath.pubpripro}"/>
+  </path>
+  
+  <path id="pubpripro.runtime.production.module.classpath">
+    <pathelement location="${pubpripro.output.dir}"/>
+  </path>
+  
+  <path id="pubpripro.module.classpath">
+    <path refid="${module.jdk.classpath.pubpripro}"/>
+    <pathelement location="${pubpripro.output.dir}"/>
+  </path>
+  
+  <path id="pubpripro.runtime.module.classpath">
+    <pathelement location="${pubpripro.testoutput.dir}"/>
+    <pathelement location="${pubpripro.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.pubpripro">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.pubpripro">
+    <patternset refid="excluded.from.module.pubpripro"/>
+  </patternset>
+  
+  <path id="pubpripro.module.sourcepath">
+    <dirset dir="${module.pubpripro.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.pubpripro" depends="compile.module.pubpripro.production,compile.module.pubpripro.tests" description="Compile module PubPriPro"/>
+  
+  <target name="compile.module.pubpripro.production" depends="register.custom.compilers" description="Compile module PubPriPro; production classes">
+    <mkdir dir="${pubpripro.output.dir}"/>
+    <javac2 destdir="${pubpripro.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.pubpripro}/javac">
+      <compilerarg line="${compiler.args.pubpripro}"/>
+      <bootclasspath refid="pubpripro.module.bootclasspath"/>
+      <classpath refid="pubpripro.module.production.classpath"/>
+      <src refid="pubpripro.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.pubpripro"/>
+    </javac2>
+    
+    <copy todir="${pubpripro.output.dir}">
+      <fileset dir="${module.pubpripro.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.pubpripro.tests" depends="register.custom.compilers,compile.module.pubpripro.production" description="compile module PubPriPro; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.pubpripro" description="cleanup module">
+    <delete dir="${pubpripro.output.dir}"/>
+    <delete dir="${pubpripro.testoutput.dir}"/>
+  </target>
+</project>
